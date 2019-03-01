@@ -321,9 +321,12 @@ class ImageModel(models.Model):
             self.create_size(photosize)
         if photosize.increment_count:
             self.increment_count()
-        return '/'.join([
-            self.cache_url(),
-            filepath_to_uri(self._get_filename_for_size(photosize.name))])
+        return default_storage.url(
+            '/'.join([
+                self.cache_path(),
+                filepath_to_uri(self._get_filename_for_size(photosize.name))]
+            )
+        )
 
     def _get_SIZE_filename(self, size):
         photosize = PhotoSizeCache().sizes.get(size)
